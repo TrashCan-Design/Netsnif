@@ -2,6 +2,7 @@ import React from 'react';
 import { IonApp, IonPage, IonRouterOutlet } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { Redirect, Route } from 'react-router-dom';
+import ReactDOM from 'react-dom/client';
 import HomePage from './pages/HomePage';
 import PacketDetailPage from './pages/PacketDetailPage';
 import { PacketProvider } from './context/PacketContext';

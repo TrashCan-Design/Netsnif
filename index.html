@@ -1,31 +1,56 @@
 <!DOCTYPE html>
-<html lang="en">
+  <html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <title>Ionic App</title>
-    
-    <base href="/" />
-    
-    <meta name="color-scheme" content="light dark" />
-    <meta
-      name="viewport"
-      content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
-    />
-    <meta name="format-detection" content="telephone=no" />
-    <meta name="msapplication-tap-highlight" content="no" />
-    
-    <link rel="manifest" href="/manifest.json" />
-    
-    <link rel="shortcut icon" type="image/png" href="/favicon.png" />
-    
-    <!-- add to homescreen for ios -->
-    <meta name="mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-title" content="Ionic App" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+   <meta charset="utf-8" />
+   <title>Ionic App</title>
+   
+   <base href="/" />
+   
+   <meta name="color-scheme" content="light dark" />
+   <meta
+    name="viewport"
+    content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
+   />
+   <meta name="format-detection" content="telephone=no" />
+   <meta name="msapplication-tap-highlight" content="no" />
+   
+   <link rel="manifest" href="/manifest.json" />
+   
+   <link rel="shortcut icon" type="image/png" href="/favicon.png" />
+   
+   <!-- add to homescreen for ios -->
+   <meta name="mobile-web-app-capable" content="yes" />
+   <meta name="apple-mobile-web-app-title" content="Ionic App" />
+   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+   
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css"/>
+   <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+   <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+   <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+   <style>
+    #root {
+     position: fixed;
+     top: 50%;
+     left: 50%;
+     transform: translate(-50%, -50%);
+     background-color: red;
+     color: white;
+     padding: 20px;
+     z-index: 9999;
+    }
+   </style>
   </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script type="text/javascript">
+      function HelloWorld() {
+        return React.createElement('h1', null, 'Hello World from React CDN using createRoot!');
+      }
+
+      const root = ReactDOM.createRoot(document.getElementById('root')); // USE CREATEROOT
+      root.render(React.createElement(HelloWorld)); // USE root.render
+    </script>
   </body>
-  
-</html>
+ </html>
