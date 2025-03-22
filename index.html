@@ -1,56 +1,123 @@
 <!DOCTYPE html>
-  <html lang="en">
+<html lang="en">
   <head>
-   <meta charset="utf-8" />
-   <title>Ionic App</title>
-   
-   <base href="/" />
-   
-   <meta name="color-scheme" content="light dark" />
-   <meta
-    name="viewport"
-    content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
-   />
-   <meta name="format-detection" content="telephone=no" />
-   <meta name="msapplication-tap-highlight" content="no" />
-   
-   <link rel="manifest" href="/manifest.json" />
-   
-   <link rel="shortcut icon" type="image/png" href="/favicon.png" />
-   
-   <!-- add to homescreen for ios -->
-   <meta name="mobile-web-app-capable" content="yes" />
-   <meta name="apple-mobile-web-app-title" content="Ionic App" />
-   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-   
-   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css"/>
-   <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
-   <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
-   <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
-   <style>
-    #root {
-     position: fixed;
-     top: 50%;
-     left: 50%;
-     transform: translate(-50%, -50%);
-     background-color: red;
-     color: white;
-     padding: 20px;
-     z-index: 9999;
-    }
-   </style>
+    <meta charset="utf-8" />
+    <title>Ionic App</title>
+    
+    <base href="/" />
+    
+    <meta name="color-scheme" content="light dark" />
+    <meta
+      name="viewport"
+      content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    
+    <link rel="manifest" href="/manifest.json" />
+    
+    <link rel="shortcut icon" type="image/png" href="/favicon.png" />
+    
+    <!-- add to homescreen for ios -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Ionic App" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   </head>
   <body>
     <div id="root"></div>
-    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
-    <script type="text/javascript">
-      function HelloWorld() {
-        return React.createElement('h1', null, 'Hello World from React CDN using createRoot!');
-      }
-
-      const root = ReactDOM.createRoot(document.getElementById('root')); // USE CREATEROOT
-      root.render(React.createElement(HelloWorld)); // USE root.render
-    </script>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
- </html>
+<script>
+  // Create a logging function that's visible on screen
+  function logToScreen(message) {
+    console.log(message);
+    
+    const logContainer = document.getElementById('debug-log') || (() => {
+      const container = document.createElement('div');
+      container.id = 'debug-log';
+      container.style.position = 'fixed';
+      container.style.top = '100px';
+      container.style.left = '10px';
+      container.style.right = '10px';
+      container.style.backgroundColor = 'rgba(0,0,0,0.8)';
+      container.style.color = 'lime';
+      container.style.fontFamily = 'monospace';
+      container.style.fontSize = '12px';
+      container.style.padding = '10px';
+      container.style.zIndex = '10000';
+      container.style.overflow = 'auto';
+      container.style.maxHeight = '80%';
+      document.body.appendChild(container);
+      return container;
+    })();
+    
+    const entry = document.createElement('div');
+    entry.textContent = `[${new Date().toISOString().substr(11, 8)}] ${message}`;
+    logContainer.appendChild(entry);
+    logContainer.scrollTop = logContainer.scrollHeight;
+  }
+
+  // Log all errors
+  window.onerror = function(message, source, lineno, colno, error) {
+    logToScreen(`ERROR: ${message} at ${source}:${lineno}:${colno}`);
+    return false;
+  };
+
+  // Monitor resource loading
+  const originalFetch = window.fetch;
+  window.fetch = function(...args) {
+    logToScreen(`Fetch: ${args[0]}`);
+    return originalFetch.apply(this, args)
+      .then(response => {
+        logToScreen(`Fetch response: ${args[0]} - ${response.status}`);
+        return response;
+      })
+      .catch(error => {
+        logToScreen(`Fetch error: ${args[0]} - ${error.message}`);
+        throw error;
+      });
+  };
+
+  // Log lifecycle events
+  document.addEventListener('DOMContentLoaded', () => logToScreen('DOM loaded'));
+  window.addEventListener('load', () => logToScreen('Window loaded'));
+  
+  // Check for React/Ionic root elements
+  setTimeout(() => {
+    logToScreen(`Body children: ${document.body.children.length}`);
+    
+    // Check for common React root elements
+    ['#root', '#app', 'ion-app'].forEach(selector => {
+      const el = document.querySelector(selector);
+      logToScreen(`${selector}: ${el ? 'Found' : 'Not found'}`);
+      if (el) {
+        logToScreen(`${selector} children: ${el.children.length}`);
+      }
+    });
+  }, 1000);
+  
+  // Check resources
+  setTimeout(() => {
+    const scripts = document.querySelectorAll('script');
+    logToScreen(`Scripts loaded: ${scripts.length}`);
+    
+    const styles = document.querySelectorAll('link[rel="stylesheet"]');
+    logToScreen(`Stylesheets loaded: ${styles.length}`);
+    
+    // Check for React
+    if (window.React) {
+      logToScreen('React is loaded');
+    } else {
+      logToScreen('WARNING: React is NOT loaded');
+    }
+    
+    // Check for ReactDOM
+    if (window.ReactDOM) {
+      logToScreen('ReactDOM is loaded');
+    } else {
+      logToScreen('WARNING: ReactDOM is NOT loaded');
+    }
+  }, 2);
+</script>
+
+</html>
