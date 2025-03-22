@@ -25,6 +25,27 @@
   </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <script type="module" src="./src/main.tsx"></script>
   </body>
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM fully loaded');
+    
+    // Create a visible element to check if rendering works
+    var debugDiv = document.createElement('div');
+    debugDiv.style.position = 'fixed';
+    debugDiv.style.top = '50%';
+    debugDiv.style.left = '50%';
+    debugDiv.style.transform = 'translate(-50%, -50%)';
+    debugDiv.style.backgroundColor = 'red';
+    debugDiv.style.color = 'white';
+    debugDiv.style.padding = '20px';
+    debugDiv.style.zIndex = '9999';
+    debugDiv.textContent = 'Debug Element - App is loading';
+    document.body.appendChild(debugDiv);
+    
+    // Log window location
+    console.log('Window location:', window.location.href);
+  });
+</script>
 </html>
